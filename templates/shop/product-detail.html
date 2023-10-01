@@ -74,12 +74,13 @@
 
                             <div class="col-6 text-end">
                                 
+                                <a href="{% url "cart:add_to_cart" %}">
                                 <button type="button" id="add-button" value="{{product.id}}" class="btn btn-secondary btn-sm">
                         
                                 Add to cart 
                             
                                 </button> 
-                            
+                                </a>
 
                             </div>
                         
@@ -98,14 +99,14 @@
     <br>
 
 </div>
-{% comment %} 
+
 <script>
     $(document).on('click', '#add-button', function(e){
         e.preventDefault();
 
         $.ajax({
             type: 'POST',
-            url: '{% url "cart:add-to-cart" %}',
+            url: '{% url "cart:add_to_cart" %}',
             data: {
                 product_id: $('#add-button').val(),
                 product_qty: $('#select option:selected').text(),
@@ -124,6 +125,6 @@
     })
 
 
-</script> {% endcomment %}
+</script>
 
 {% endblock %}
