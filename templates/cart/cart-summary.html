@@ -8,8 +8,8 @@
 
     {% for item in cart %}
     {% with product=item.product %}
-    
-  
+
+
 
 
     <br />
@@ -20,7 +20,7 @@
           class="img-fluid mx-auto d-block"
           width="200px"
           alt="Responsive image"
-          src="{{product.image.url}}"
+          src=""
         />
       </div>
 
@@ -91,7 +91,7 @@
 
     {% endwith %}
     {% endfor %}
-    
+
     <div class="col-12 text-end">
       <div class="h6 fw-bold">
         Total: $
@@ -108,12 +108,12 @@
 
 <script>
 
-    $(document).on('click', '.delete-button', function(e){
+    {% comment %} $(document).on('click', '.delete-button', function(e){
         e.preventDefault();
 
         $.ajax({
             type: 'POST',
-            url: '#',
+            url: '{% url "cart:delete-to-cart" %}',
             data: {
                 product_id: $(this).data('index'),
                 csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -129,16 +129,16 @@
                 console.log(error)
             }
         })
-    });
+    }); {% endcomment %}
 
-    $(document).on('click', '.update-button', function(e){
+    {% comment %} $(document).on('click', '.update-button', function(e){
         e.preventDefault();
 
         var product_id = $(this).data('index')
 
         $.ajax({
             type: 'POST',
-            url: '#',
+            url: '{% url "cart:update-to-cart" %}',
             data: {
                 product_id: $(this).data('index'),
                 product_qty: $('#select'+product_id+ ' option:selected').text(),
@@ -157,10 +157,10 @@
         })
     });
 
+ {% endcomment %}
 
 
 
-    
 </script>
 
 {% endblock %}

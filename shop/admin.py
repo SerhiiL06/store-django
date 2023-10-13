@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, ProductProxy
 
 
 @admin.register(Category)
@@ -13,7 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
         }
 
 
-@admin.register(Product)
+@admin.register(ProductProxy)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["title", "price"]
 
