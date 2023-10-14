@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from .forms import RegisterForm, LoginForm, UserProfileForm, ChangePasswordForm
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 from django_email_verification import send_email
 from django.contrib.auth import login, authenticate
 
@@ -73,11 +74,16 @@ def change_password(request):
 
     if request.method == "POST":
         form = ChangePasswordForm(user=request.user)
+        old_passoword = request.POST.get("old_password")
         new_password = request.POST.get("new_password2")
         user = request.user
-        user.set_password(new_password)
-        user.save()
-        messages.success(request, "Your password was edit")
-        return redirect("account:dashboard")
+        if user.check_password(old_passoword):
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, "Your password was edit")
+            return redirect("account:login")
+        else:
+            messages.error(request, "Please try again!")
+            return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
     return render(request, "account/change-password.html", {"form": form})
