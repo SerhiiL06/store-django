@@ -3,7 +3,16 @@
 {% block content %} 
 
 
-    <!-- Introduction section -->
+{% if messages %}
+    {% for message in messages %}
+       <p>{{message}}</p> 
+    
+    {% endfor %}
+
+{% endif %}
+
+
+{% if  not user.is_authenticated %}
 
 <section class="py-4 text-center container">
     <div class="row py-lg-5">
@@ -20,6 +29,15 @@
       </div>
     </div>
   </section>
+
+
+
+{% endif %}
+
+
+
+
+
   
   <!-- All products section -->
   
