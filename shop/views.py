@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, ProductProxy
 
 
-def product_view(request, *args, **kwargs):
+def product_view(request):
     products = ProductProxy.objects.all()
     return render(request, "shop/products.html", {"products": products})
 

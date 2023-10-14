@@ -21,4 +21,5 @@ urlpatterns = [
         lambda request: render(request, "account/email/email-verification-sent.html"),
         name="email-sent",
     ),
+    path("change-password/", views.change_password, name="change-password"),
 ]

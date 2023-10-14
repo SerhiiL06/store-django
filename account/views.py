@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-from .forms import RegisterForm, LoginForm, UserProfileForm
+from .forms import RegisterForm, LoginForm, UserProfileForm, ChangePasswordForm
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django_email_verification import send_email
@@ -66,3 +66,18 @@ def delete_account(request):
     user.delete()
     messages.success(request, "You delete you account!")
     return redirect("shop:products")
+
+
+def change_password(request):
+    form = ChangePasswordForm(user=request.user)
+
+    if request.method == "POST":
+        form = ChangePasswordForm(user=request.user)
+        new_password = request.POST.get("new_password2")
+        user = request.user
+        user.set_password(new_password)
+        user.save()
+        messages.success(request, "Your password was edit")
+        return redirect("account:dashboard")
+
+    return render(request, "account/change-password.html", {"form": form})
