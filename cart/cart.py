@@ -4,15 +4,37 @@ from shop.models import ProductProxy
 
 
 class Cart:
+    # Installation cart session
     def __init__(self, request) -> None:
         self.session = request.session
 
+        # try get cart session
+
         cart = self.session.get("session_key")
 
+        # if user cannot have cart sesion
         if not cart:
             cart = self.session["session_key"] = {}
 
+        # if user have
+
         self.cart = cart
+
+    # add method
+
+    def add(self, product, quantity):
+        # take product id
+        product_id = str(product.id)
+
+        # if product not in cart
+        if product_id not in self.cart:
+            self.cart[product_id] = {"qty": quantity, "price": str(product.price)}
+
+        # if product in cart, we are update quntity res
+
+        self.cart[product_id]["qty"] = quantity
+
+        self.session.modified = True
 
     def __len__(self):
         return sum(item["qty"] for item in self.cart.values())
@@ -29,16 +51,6 @@ class Cart:
             item["price"] = Decimal(item["price"])
             item["total"] = item["price"] * item["qty"]
             yield item
-
-    def add(self, product, quantity):
-        product_id = str(product.id)
-
-        if product_id not in self.cart:
-            self.cart[product_id] = {"qty": quantity, "price": str(product.price)}
-
-        self.cart[product_id]["qty"] = quantity
-
-        self.session.modified = True
 
     def delete(self, product):
         product_id = str(product)
