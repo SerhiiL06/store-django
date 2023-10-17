@@ -29,7 +29,11 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "shop.apps.ShopConfig",
+<<<<<<< HEAD
     "account",
+=======
+    "cart.apps.CartConfig",
+>>>>>>> cart
 ]
 
 MIDDLEWARE = [
@@ -56,6 +60,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "shop.context_processors.categories",
+                "cart.context_processors.cart",
             ],
         },
     },
