@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from django.http import JsonResponse
 from cart.cart import Cart
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .forms import ShippingAddressForm
 from shop.models import Product
 from .models import ShippingAddress, Order, OrderItem
 from django.views.generic import View, TemplateView
+from django.http import JsonResponse
+import stripe
+from django.conf import settings
+from base.settings import STRIPE_SECRET_KEY, STRIPE_VERSION
+from decimal import Decimal
+
+
+stripe.api_version = STRIPE_VERSION
+stripe.api_key = STRIPE_SECRET_KEY
 
 
 class ShippingAddressView(View):
@@ -44,7 +52,7 @@ class CheckoutView(View):
 
 
 def order_complete(request):
-    if request.POST.get("action") == "payment":
+    if request.method == "POST":
         email = request.POST["email"]
         full_name = request.POST["full_name"]
         city = request.POST["city"]
@@ -80,7 +88,31 @@ def order_complete(request):
                 price=item["price"],
             )
 
-        return JsonResponse({"success": True})
+            session = stripe.checkout.Session.create(
+                mode="payment",
+                success_url=request.build_absolute_uri(
+                    reverse("payment:payment-success")
+                ),
+                cancel_url=request.build_absolute_uri(
+                    reverse("payment:payment-failed")
+                ),
+                line_items=[
+                    (
+                        {
+                            "price_data": {
+                                "unit_amount": int(item["price"] * Decimal(100)),
+                                "currency": "uah",
+                                "product_data": {"name": item["product"]},
+                            },
+                            "quantity": item["qty"],
+                        }
+                    )
+                ],
+            )
+
+        print("Before redirect")  # Добавьте эту строку
+
+        return redirect(session.url)
 
 
 class PaymentSuccessView(TemplateView):

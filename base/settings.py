@@ -13,7 +13,7 @@ SECRET_KEY = "django-insecure-t*p^^0a79)8*o#x$8^wa-!y64(krcn22rk&k#e!$u8l6ad5cq$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -179,3 +179,12 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "sergiy06061997@gmail.com"
 EMAIL_HOST_PASSWORD = "xwnv qxxe jlkx slmq"  # os.environ['password_key'] suggested
 EMAIL_USE_TLS = True
+
+
+# Stripe
+
+
+STRIPE_PUBLISH_KEY = "pk_test_51OHMv3BZO0CvYkSdGa1HBrbX9UvliwtnyEpZY03IvIpArOgQrdjohbLiEnuUemm8jDYSVOwnaQzHdsl5FNS54vXo00LeqMr00O"
+STRIPE_SECRET_KEY = "sk_test_51OHMv3BZO0CvYkSdHipFGLYO6Ucni5gIzmBWYyNUEvy2sywl6QCDidyweORxEcoCtvffaDO869boIblVf6qRglAT00z49w5Pn3"
+
+STRIPE_VERSION = "2023-10-16"

@@ -4,7 +4,7 @@ from .forms import RegisterForm, LoginForm, UserProfileForm, ChangePasswordForm
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
-from django_email_verification import send_email
+
 from django.contrib.auth import login, authenticate
 
 
@@ -21,8 +21,6 @@ def register_view(request):
             )
 
             user.is_active = False
-
-            send_email(user)
 
             return redirect("account:email-sent")
 
